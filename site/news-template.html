@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<!--
+  ============================================================
+  ニュース記事テンプレート
+  ============================================================
+  【使い方】
+  1. このファイルを複製して記事フォルダに置く
+     例: news/2026-07-01-taikai/ フォルダを作り、
+         その中に index.html として保存する
+     ※ 下書き段階では news/_drafts/ の中に置いておけば
+        サイトには表示されません（news/_drafts/このフォルダの使い方.txt 参照）
+
+  2. 「★ここを編集」とコメントされている箇所を書き換える
+
+  3. 写真は images/ フォルダに保存し src の値を書き換える
+
+  4. content/news.txt にブロックを1件追加する（README参照）
+
+  5. Netlify に再アップロードして反映する
+  ============================================================
+-->
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#6D28D9">
+<!-- ★ここを編集：タイトルを記事名に変更 -->
+<title>記事タイトル | 愛知工業大学 陸上競技部</title>
+<!-- ★ここを編集：記事の概要を書く -->
+<meta name="description" content="記事の概要を140文字以内で書いてください。">
+<link rel="icon" type="image/png" href="/images/logo.png">
+<link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+<!-- ヘッダー：js/layout.js が自動挿入します（編集は js/layout.js の1か所だけ） -->
+<div id="site-header"></div>
+
+<!-- ===== PAGE HERO ===== -->
+<div class="page-hero">
+  <h1 class="page-hero-en">NEWS</h1>
+  <p class="page-hero-ja">ニュース</p>
+</div>
+
+<!-- ===== ARTICLE ===== -->
+<section class="section">
+  <div class="container">
+    <div class="article-wrap">
+
+      <!-- 記事ヘッダー -->
+      <div class="article-head">
+        <div class="article-meta">
+          <!-- ★ここを編集：日付（YYYY.MM.DD 形式） -->
+          <time class="article-date">2026.07.01</time>
+
+          <!--
+            ★ここを編集：カテゴリ
+            使えるカテゴリと対応するクラス：
+            お知らせ  → cat-tag--notice
+            大会結果  → cat-tag--result
+            駅伝     → cat-tag--ekiden
+            活動報告  → cat-tag--activity
+          -->
+          <span class="cat-tag cat-tag--result">大会結果</span>
+        </div>
+
+        <!-- ★ここを編集：記事タイトル -->
+        <h1 class="article-title">記事タイトルをここに入力してください</h1>
+      </div>
+
+      <!--
+        ===== メイン画像（1枚目・大きめ）=====
+        写真がある場合：img タグのコメントアウトを外し、
+          src に画像パス、alt に説明を書く
+        写真がない場合：img タグごと削除する
+
+        推奨サイズ：横幅1200px以上・16:9の横長画像
+        保存先例：/images/news/2026-07-01-main.jpg
+      -->
+      <!--
+      <img
+        class="article-img-main"
+        src="/images/news/画像ファイル名.jpg"
+        alt="★ここを編集：画像の説明（例：大会会場の様子）">
+      -->
+      <!-- 写真未設定の場合はこのプレースホルダーを削除する -->
+      <div class="img-placeholder">
+        <span style="font-size:32px;">📸</span>
+        <span>メイン画像をここに配置（任意）</span>
+        <span style="font-size:11px;">img タグのコメントアウトを外して src に画像パスを入力</span>
+      </div>
+
+      <!-- ===== 記事本文 ===== -->
+      <div class="article-body">
+
+        <!--
+          ★ここを編集：本文を書く
+          ・<p> タグで段落を分ける
+          ・<h2> で見出し（大）、<h3> で見出し（小）
+          ・<ul> / <li> で箇条書き
+        -->
+        <p>
+          ここに記事の本文を入力してください。段落ごとに &lt;p&gt; タグで区切ってください。
+          長い文章は読みやすいよう適宜改行・段落分けを行ってください。
+        </p>
+
+        <p>
+          2段落目の文章をここに入力します。
+        </p>
+
+        <!-- 見出し（H2）の例 -->
+        <h2>見出しの例（大会結果など）</h2>
+
+        <p>
+          見出しの後に本文を書きます。
+        </p>
+
+        <!-- 箇条書きの例 -->
+        <ul>
+          <li>項目1：例）5000m 田中 雄大（4年）14'20"34</li>
+          <li>項目2：例）3000mSC 伊藤 颯（4年）9'15"43</li>
+          <li>項目3：例）400mH 石井 勇気（3年）51"23 ← 1位・PB</li>
+        </ul>
+
+        <!-- 小見出し（H3）の例 -->
+        <h3>小見出しの例</h3>
+
+        <p>
+          小見出しの後の文章をここに書きます。
+        </p>
+
+        <!--
+          ===== 画像を途中に挿入する場合 =====
+          src に画像パス、alt に説明を書く。
+          使わない場合はこのブロックを削除する。
+        -->
+        <!--
+        <figure style="margin: 2em 0;">
+          <img class="article-img-sub" src="/images/news/画像ファイル名.jpg" alt="★画像の説明">
+          <figcaption class="article-img-caption">★ここを編集：キャプション（例：表彰式の様子）</figcaption>
+        </figure>
+        -->
+
+        <!--
+          ===== 画像を複数枚グリッド表示する場合 =====
+          2列表示：article-img-grid（デフォルト）
+          3列表示：article-img-grid cols-3 に変更
+          使わない場合はこのブロックを削除する。
+        -->
+        <!--
+        <div class="article-img-grid">
+          <figure>
+            <img class="article-img-sub" src="/images/news/画像1.jpg" alt="★画像1の説明">
+            <figcaption class="article-img-caption">★キャプション1</figcaption>
+          </figure>
+          <figure>
+            <img class="article-img-sub" src="/images/news/画像2.jpg" alt="★画像2の説明">
+            <figcaption class="article-img-caption">★キャプション2</figcaption>
+          </figure>
+          <figure>
+            <img class="article-img-sub" src="/images/news/画像3.jpg" alt="★画像3の説明">
+            <figcaption class="article-img-caption">★キャプション3</figcaption>
+          </figure>
+          <figure>
+            <img class="article-img-sub" src="/images/news/画像4.jpg" alt="★画像4の説明">
+            <figcaption class="article-img-caption">★キャプション4</figcaption>
+          </figure>
+        </div>
+        -->
+
+        <p>
+          記事の締めくくりの文章を書きます。今後の活動への意気込みや、応援へのお礼などを書くと良いでしょう。
+        </p>
+
+      </div>
+      <!-- /article-body -->
+
+      <!-- 記事フッター（ナビゲーション） -->
+      <div class="article-footer">
+        <a href="/news/" class="article-back-btn">← ニュース一覧に戻る</a>
+      </div>
+
+    </div>
+    <!-- /article-wrap -->
+  </div>
+</section>
+
+<!-- フッター：js/layout.js が自動挿入します（編集は js/layout.js の1か所だけ） -->
+<div id="site-footer"></div>
+
+<script src="/js/layout.js"></script>
+<script src="/js/main.js"></script>
+</body>
+</html>

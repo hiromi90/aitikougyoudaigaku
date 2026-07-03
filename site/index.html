@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#6D28D9">
+<title>愛知工業大学 陸上競技部 公式サイト</title>
+<meta name="description" content="愛知工業大学 陸上競技部の公式サイト。部員紹介・練習スケジュール・大会結果・記録などを発信しています。スローガン：王者奪換。">
+<link rel="icon" type="image/png" href="/images/logo.png">
+<link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+<!-- ヘッダー：js/layout.js が自動挿入します（編集は js/layout.js の1か所だけ） -->
+<div id="site-header"></div>
+
+<!-- ===== HERO ===== -->
+<section class="hero">
+  <!--
+    【写真の差し替え方】
+    /images/hero.jpg に実際の部員写真を置いてください（推奨: 横幅1920px以上の横長JPEG/WebP）。
+  -->
+  <img class="hero-bg" src="/images/hero.jpg" alt="愛知工業大学 陸上競技部 チーム写真">
+  <div class="hero-overlay"></div>
+  <div class="hero-bar"></div>
+  <div class="hero-content">
+    <h1 class="hero-title" data-site="hero-title">愛知工業大学<br>陸上競技部</h1>
+    <p class="hero-sub" data-site="hero-sub">Aichi Institute of Technology Athletics Club</p>
+  </div>
+</section>
+
+<!-- ===== NEWS ===== -->
+<section class="section">
+  <div class="container">
+    <div class="sec-head fade-up">
+      <p class="sec-eyebrow">News</p>
+      <h2 class="sec-title">最新情報</h2>
+    </div>
+    <!-- content/news.txt を content-loader.js が読み込んで自動描画します -->
+    <ul class="news-list" id="top-news-list"></ul>
+    <a href="/news/" class="btn-more">もっと見る →</a>
+  </div>
+</section>
+
+<!-- ===== COACH ===== -->
+<section class="section section--light">
+  <div class="container">
+    <div class="sec-head fade-up">
+      <p class="sec-eyebrow">Coaching Staff</p>
+      <h2 class="sec-title">監督紹介</h2>
+    </div>
+    <div class="coach-wrap fade-up" id="coach-wrap">
+      <!-- content/coach.txt から自動生成されます -->
+    </div>
+  </div>
+</section>
+
+<!-- ===== SLOGAN ===== -->
+<section class="slogan-sec">
+  <div class="container">
+    <p class="slogan-text" data-site="slogan"><span class="slogan-accent">王</span>者<span class="slogan-accent">奪</span>換</p>
+    <p class="slogan-en" data-site="slogan-en">RECLAIM THE THRONE</p>
+  </div>
+</section>
+
+<!-- ===== SNS ===== -->
+<section class="section">
+  <div class="container">
+    <div class="sec-head sec-head--center fade-up">
+      <p class="sec-eyebrow">Follow Us</p>
+      <h2 class="sec-title">SNS</h2>
+    </div>
+    <div class="sns-grid">
+      <a href="https://x.com/iko_dai_ld" target="_blank" rel="noopener noreferrer" class="sns-card fade-up">
+        <svg viewBox="0 0 24 24" fill="#1F2937" xmlns="http://www.w3.org/2000/svg">
+          <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+        </svg>
+        <span class="sns-name">X（旧 Twitter）</span>
+        <span class="sns-handle">@iko_dai_ld</span>
+      </a>
+      <a href="https://www.instagram.com/ait_runners" target="_blank" rel="noopener noreferrer" class="sns-card fade-up">
+        <svg viewBox="0 0 24 24" fill="#E1306C" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/>
+        </svg>
+        <span class="sns-name">Instagram</span>
+        <span class="sns-handle">@ait_runners</span>
+      </a>
+    </div>
+    <div class="qr-row">
+      <div class="qr-box-wrap">
+        <img src="/images/qr-x.png" alt="X QRコード" width="96" height="96" style="border-radius:8px;">
+        <p class="qr-label">X（Twitter）</p>
+      </div>
+      <div class="qr-box-wrap">
+        <img src="/images/qr-instagram.png" alt="Instagram QRコード" width="96" height="96" style="border-radius:8px;">
+        <p class="qr-label">Instagram</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- フッター：js/layout.js が自動挿入します（編集は js/layout.js の1か所だけ） -->
+<div id="site-footer"></div>
+
+<script src="/js/layout.js"></script>
+<script src="/js/content-loader.js"></script>
+<script src="/js/main.js"></script>
+</body>
+</html>

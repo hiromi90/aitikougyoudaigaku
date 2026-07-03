@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<!--
+  ============================================================
+  ニュース整理用ページ（部内担当者向け・ナビには載せていません）
+  ------------------------------------------------------------
+  ・ブラウザで /news/maintenance/ を開くと、6ヶ月以上前になって
+    自動非表示された記事の「削除リスト」が表示されます。
+  ・表示されたブロックを content/news.txt から削除し、
+    記事フォルダの案内があればそのフォルダも削除してください。
+  ・Claudeに「古いニュースを整理して」と頼めば、news.txt の
+    整理と削除フォルダの一覧作成を代わりに行ってもらえます。
+  ============================================================
+-->
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#6D28D9">
+<title>ニュース整理（担当者用） | 愛知工業大学 陸上競技部</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" type="image/png" href="/images/logo.png">
+<link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+<!-- ヘッダー：js/layout.js が自動挿入します -->
+<div id="site-header"></div>
+
+<!-- ===== PAGE HERO ===== -->
+<div class="page-hero">
+  <h1 class="page-hero-en">MAINTENANCE</h1>
+  <p class="page-hero-ja">ニュース整理（担当者用）</p>
+</div>
+
+<!-- ===== MAINTENANCE ===== -->
+<section class="section">
+  <div class="container">
+
+    <div class="maint-guide fade-up">
+      <p><strong>このページは部内担当者用です</strong>（ナビゲーションには表示されません）。</p>
+      <p>
+        6ヶ月以上前になり、ニュースページで自動非表示になった記事の一覧です。
+        下の各ブロックを <code>content/news.txt</code> から削除すると、データの整理が完了します。
+      </p>
+      <p>
+        💡 手作業が面倒なときは、Claudeに <code>content/news.txt</code> を渡して
+        「6ヶ月以上前の古いニュースを整理してください」と頼めば、
+        整理済みの news.txt と、削除してよい記事フォルダの一覧を作ってもらえます。
+      </p>
+    </div>
+
+    <div id="news-maintenance-list">
+      <p class="records-loading">読み込み中…</p>
+    </div>
+
+  </div>
+</section>
+
+<!-- フッター：js/layout.js が自動挿入します -->
+<div id="site-footer"></div>
+
+<script src="/js/layout.js"></script>
+<script src="/js/content-loader.js"></script>
+<script src="/js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#6D28D9">
+<title>ニュース | 愛知工業大学 陸上競技部</title>
+<meta name="description" content="愛知工業大学 陸上競技部の最新ニュース。大会結果・活動報告・お知らせを掲載しています。">
+<link rel="icon" type="image/png" href="/images/logo.png">
+<link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+<!-- ヘッダー：js/layout.js が自動挿入します（編集は js/layout.js の1か所だけ） -->
+<div id="site-header"></div>
+
+<!-- ===== PAGE HERO ===== -->
+<div class="page-hero">
+  <h1 class="page-hero-en">NEWS</h1>
+  <p class="page-hero-ja">ニュース</p>
+</div>
+
+<!-- ===== NEWS LIST ===== -->
+<section class="section">
+  <div class="container">
+
+    <div class="sec-head fade-up">
+      <p class="sec-eyebrow">News</p>
+      <h2 class="sec-title">ニュース</h2>
+      <p style="font-size:13px;color:var(--sub);margin-top:6px;">
+        直近6ヶ月以内のニュースを表示しています
+      </p>
+    </div>
+
+    <!--
+      ===== 表示データについて =====
+      ・新しい記事は content/news.txt にブロックを1つ追加してください（場所は自由・自動で日付順に並びます）
+      ・6ヶ月以上前のニュースは自動的に非表示になります
+      ・古い記事の削除リストは /news/maintenance/ ページで確認できます
+    -->
+    <div class="news-page-list" id="news-page-list">
+      <!-- content/news.txt を content-loader.js が読み込んで自動描画します -->
+    </div>
+
+  </div>
+</section>
+
+<!-- フッター：js/layout.js が自動挿入します（編集は js/layout.js の1か所だけ） -->
+<div id="site-footer"></div>
+
+<script src="/js/layout.js"></script>
+<script src="/js/content-loader.js"></script>
+<script src="/js/main.js"></script>
+</body>
+</html>

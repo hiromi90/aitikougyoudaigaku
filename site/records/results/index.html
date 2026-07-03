@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#6D28D9">
+<title>大会結果 | 愛知工業大学 陸上競技部</title>
+<meta name="description" content="愛知工業大学 陸上競技部の大会結果一覧。年度別に大会ごとの結果・記録を掲載しています。">
+<link rel="icon" type="image/png" href="/images/logo.png">
+<link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+<!-- ヘッダー：js/layout.js が自動挿入します（編集は js/layout.js の1か所だけ） -->
+<div id="site-header"></div>
+
+<!-- ===== PAGE HERO ===== -->
+<div class="page-hero">
+  <h1 class="page-hero-en">RESULTS</h1>
+  <p class="page-hero-ja">大会結果</p>
+</div>
+
+<!-- ===== RESULTS ===== -->
+<section class="section">
+  <div class="container">
+
+    <p style="font-size:13px;color:var(--sub);margin-bottom:20px;">
+      年度を選ぶと、その年度のスプレッドシートに登録された大会結果が「開催日の新しい順」に自動で表示されます。
+    </p>
+
+    <!-- 年度ボタン（content/results.txt から自動生成）-->
+    <div class="year-nav" id="results-year-nav"></div>
+
+    <!-- 大会結果（GASから自動取得して表示）-->
+    <div id="results-content"></div>
+
+  </div>
+</section>
+
+<!-- フッター：js/layout.js が自動挿入します（編集は js/layout.js の1か所だけ） -->
+<div id="site-footer"></div>
+
+<script src="/js/layout.js"></script>
+<script src="/js/content-loader.js"></script>
+<script src="/js/main.js"></script>
+</body>
+</html>

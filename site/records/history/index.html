@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#6D28D9">
+<title>歴代記録 | 愛知工業大学 陸上競技部</title>
+<meta name="description" content="愛知工業大学 陸上競技部の歴代記録。種目別歴代4傑・全日本大学駅伝東海地区選考会・東海学生駅伝の歴代最高記録を掲載。">
+<link rel="icon" type="image/png" href="/images/logo.png">
+<link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+<!-- ヘッダー：js/layout.js が自動挿入します（編集は js/layout.js の1か所だけ） -->
+<div id="site-header"></div>
+
+<!-- ===== HISTORY HERO ===== -->
+<div class="history-hero">
+  <h1 class="history-hero-title">歴代4傑</h1>
+  <p class="history-hero-sub">ALL-TIME TOP RECORDS</p>
+</div>
+
+<!-- ===== 駅伝歴代最高記録 ===== -->
+<section class="section">
+  <div class="container">
+
+    <div class="sec-head fade-up">
+      <p class="sec-eyebrow">Ekiden</p>
+      <h2 class="sec-title sec-title--accent">駅伝 歴代最高記録</h2>
+    </div>
+
+    <!-- 駅伝カードは content/ekiden.txt から自動生成されます -->
+    <div id="ekiden-container">
+      <!-- 自動生成 -->
+    </div>
+
+  </div>
+</section>
+
+<!-- ===== 種目別歴代4傑 ===== -->
+<section class="section">
+  <div class="container">
+
+    <div class="sec-head fade-up">
+      <p class="sec-eyebrow">All-Time Rankings</p>
+      <h2 class="sec-title sec-title--accent">種目別歴代記録</h2>
+    </div>
+
+    <div class="fade-up">
+      <!--
+        【歴代記録スプレッドシートの埋め込み方】
+        1.「陸上競技部 歴代記録」Googleスプレッドシートを作成・公開設定にする
+           「歴代4傑」シート：14種目を横に並べ、各種目の1〜4位の記録・氏名・樹立年度を記載
+           1位セル：金色背景（#F59E0B）・黒文字で装飾する
+        2.「ファイル → ウェブに公開 → 埋め込む」からコードを取得
+        3. 下の embed-ph ブロック全体を削除し、コピーした iframe と差し替える
+      -->
+      <div class="rank-tabs">
+        <button class="rank-btn active" data-rank="1">👑1位</button>
+        <button class="rank-btn" data-rank="2">🥈2位</button>
+        <button class="rank-btn" data-rank="3">🥉 3位</button>
+        <button class="rank-btn" data-rank="4">4位</button>
+      </div>
+      <p id="last-update"></p>
+      <p class="scroll-hint">
+        ← 横にスクロールできます →
+      </p>
+      <div id="ranking-table"></div>
+    </div>
+  </div>
+</section>
+
+<!-- フッター：js/layout.js が自動挿入します（編集は js/layout.js の1か所だけ） -->
+<div id="site-footer"></div>
+
+<script src="/js/layout.js"></script>
+<script src="/js/content-loader.js"></script>
+<script src="/js/main.js"></script>
+</body>
+</html>

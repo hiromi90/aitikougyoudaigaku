@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#6D28D9">
+<title>部員紹介 | 愛知工業大学 陸上競技部</title>
+<meta name="description" content="愛知工業大学 陸上競技部の部員紹介ページ。長距離・短距離・マネージャー、計36名の部員情報を掲載しています。">
+<link rel="icon" type="image/png" href="/images/logo.png">
+<link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+<!-- ヘッダー：js/layout.js が自動挿入します（編集は js/layout.js の1か所だけ） -->
+<div id="site-header"></div>
+
+<!-- ===== PAGE HERO ===== -->
+<div class="page-hero">
+  <h1 class="page-hero-en">MEMBERS</h1>
+  <p class="page-hero-ja">部員紹介</p>
+</div>
+
+<!-- ===== MEMBERS ===== -->
+<section class="section">
+  <div class="container">
+
+    <!-- ブロック別ナビゲーション -->
+    <div class="block-nav">
+      <button class="block-nav-btn active" data-scroll-to="block-long">長距離（19名）</button>
+      <button class="block-nav-btn" data-scroll-to="block-short">短距離（16名）</button>
+      <button class="block-nav-btn" data-scroll-to="block-manager">マネージャー（1名）</button>
+    </div>
+
+    <!-- 長距離 -->
+    <div id="block-long">
+      <h2 class="members-block-head">長距離ブロック <span class="members-count">19名</span></h2>
+      <div class="members-grid" id="members-long">
+        <!-- content/members.txt から自動生成されます -->
+      </div>
+    </div>
+
+    <!-- 短距離 -->
+    <div id="block-short">
+      <h2 class="members-block-head">短距離ブロック <span class="members-count">16名</span></h2>
+      <div class="members-grid" id="members-short">
+        <!-- content/members.txt から自動生成されます -->
+      </div>
+    </div>
+
+    <!-- マネージャー -->
+    <div id="block-manager">
+      <h2 class="members-block-head">マネージャー <span class="members-count">1名</span></h2>
+      <div class="members-grid" id="members-manager">
+        <!-- content/members.txt から自動生成されます -->
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- フッター：js/layout.js が自動挿入します（編集は js/layout.js の1か所だけ） -->
+<div id="site-footer"></div>
+
+<script src="/js/layout.js"></script>
+<script src="/js/content-loader.js"></script>
+<script src="/js/main.js"></script>
+</body>
+</html>

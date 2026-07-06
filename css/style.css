@@ -71,11 +71,11 @@ button { font-family: var(--font); cursor: pointer; }
 .global-nav li { position: relative; }
 .global-nav a {
   display: block; padding: 8px 13px;
-  color: rgb(186, 146, 14); font-size: 14px; font-weight: 700;
+  color: rgb(255, 255, 0); font-size: 14px; font-weight: 700;
   border-radius: 6px; transition: background var(--t), color var(--t); white-space: nowrap;
 }
 .global-nav a:hover,
-.global-nav li.current > a { background: var(--primary-light); color: rgb(186, 146, 14); }
+.global-nav li.current > a { background: var(--primary-light); color: rgb(255, 255, 0); }
 
 /* Dropdown */
 .has-dropdown > a::after { content: ' ▾'; font-size: 11px; }

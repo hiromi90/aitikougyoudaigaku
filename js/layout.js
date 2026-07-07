@@ -110,7 +110,10 @@ var SITE_FOOTER_HTML = `
     </div>
     <div class="f-copy"><p>© 2026 愛知工業大学 陸上競技部 All Rights Reserved.</p></div>
   </div>
-</footer>`;
+</footer>
+<!-- ページ上部へ戻るボタン（全ページ共通）。
+     見た目は css の「.to-top」、出現タイミングは main.js の「TOTOP_SHOW_AT」で調整。 -->
+<button class="to-top" id="to-top" aria-label="ページ上部へ戻る">↑</button>`;
 
 /* ---------- ③ 挿入処理（触る必要はありません） ---------- */
 (function insertLayout() {

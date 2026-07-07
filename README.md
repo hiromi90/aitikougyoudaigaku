@@ -253,6 +253,8 @@ ait-athletics/
 | ロゴの大きさ | `.site-logo img { height: … }` |
 | スマホ全画面メニューの色・透け具合 | `.mobile-nav` の `background`（今は rgba(69, 20, 160, 0.97)） |
 | ヒーロー写真の顔の位置 | `.hero-bg` の `object-position`（PC／スマホ／大画面で別指定） |
+| 「上に戻る」ボタンが出るタイミング | `js/main.js` の `TOTOP_SHOW_AT`（今は300。0で常に表示） |
+| 「上に戻る」ボタンの位置・大きさ | `css/style.css` の `.to-top`（`--totop-edge-gap` と width/height） |
 
 - カレンダー・地図・お問い合わせフォーム・記録の各ページは、読み込みが終わるまで
   **「表示には少し時間がかかる場合がございます。」** と表示し、表示され次第そのメッセージは消えます。

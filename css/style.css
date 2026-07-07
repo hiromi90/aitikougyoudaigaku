@@ -224,6 +224,46 @@ body.nav-open .site-logo {
   pointer-events: none;
 }
 
+/* --- ページ上部へ戻るボタン（全ページ・右下に固定） ---
+   ナビと同じ「濃いめ・半透明の紫＋すりガラス風」。矢印は白。
+   カーソルを合わせると矢印が薄くなり、ピルが少し浮き上がる。
+   出現するスクロール量は js/main.js の TOTOP_SHOW_AT で調整。
+   【調整】画面端からの余白 → --totop-edge-gap
+   【調整】ボタンの大きさ → width / height（44px 未満にしない：タップしづらくなる）
+   【調整】浮き上がる量 → :hover の translateY(-3px) の 3px */
+.to-top {
+  --totop-edge-gap: 18px;          /* 画面の右端・下端からの余白 */
+  position: fixed;
+  right: var(--totop-edge-gap);
+  bottom: var(--totop-edge-gap);
+  z-index: 900;                    /* ヘッダー(1000)・メニュー(999)より下 */
+  width: 48px; height: 48px;
+  display: flex; align-items: center; justify-content: center;
+  background: var(--nav-pill-bg);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+  border: none; border-radius: 999px;
+  color: #ffffff;                  /* 矢印は白 */
+  font-size: 20px; font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+  /* ふだんは隠しておき、main.js が .is-visible を付けたら現れる */
+  opacity: 0; visibility: hidden; pointer-events: none;
+  transform: translateY(8px);
+  transition: opacity var(--t), visibility var(--t), transform var(--t), color var(--t);
+}
+.to-top.is-visible {
+  opacity: 1; visibility: visible; pointer-events: auto;
+  transform: translateY(0);
+}
+/* カーソルで矢印が薄くなり、ピルが少し浮く */
+.to-top.is-visible:hover {
+  color: rgba(255, 255, 255, 0.6);
+  transform: translateY(-3px);
+}
+/* スマホの全画面メニューを開いている間は隠す（メニューと重ならないように） */
+body.nav-open .to-top { opacity: 0; visibility: hidden; pointer-events: none; }
+
 /* === ヒーロー（トップページ最上部）===
    ------------------------------------------------------------
    写真の上にチーム名を重ねる部分。

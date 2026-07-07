@@ -140,6 +140,39 @@ document.querySelectorAll('[data-scroll-to]').forEach(btn => {
    ---------------------------------------------------------- */
 
 /* ----------------------------------------------------------
+   9. ページ上部へ戻るボタン（全ページ共通）
+   ------------------------------------------------------------
+   ボタン本体は layout.js（フッターの下）にあり、見た目は
+   css の「.to-top」で設定しています。ここでは
+   「いつ現れるか」と「押したら上に戻る」動作だけを担当します。
+   ---------------------------------------------------------- */
+/* 【調整】何pxスクロールしたらボタンが現れるか。
+   ・数字を大きくする → もっとスクロールしないと出てこない
+   ・0 にする → 最初から常に表示 */
+const TOTOP_SHOW_AT = 300;
+
+(function () {
+  const btn = document.getElementById('to-top');
+  if (!btn) return;
+
+  // スクロール量に応じて表示・非表示を切り替え
+  let ticking = false;
+  function update() {
+    btn.classList.toggle('is-visible', window.scrollY > TOTOP_SHOW_AT);
+    ticking = false;
+  }
+  window.addEventListener('scroll', () => {
+    if (!ticking) { ticking = true; window.requestAnimationFrame(update); }
+  }, { passive: true });
+  update();   // 読み込み直後の状態も反映（途中位置で再読み込みした場合など）
+
+  // クリックで最上部へスムーズスクロール
+  btn.addEventListener('click', () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+})();
+
+/* ----------------------------------------------------------
    10.-11. ニュース表示（トップページ・ニュースページ）
    ※ content/news.txt を content-loader.js が読み込んで描画します
      （ここでは何もしません）。記事の追加は content/news.txt へ。

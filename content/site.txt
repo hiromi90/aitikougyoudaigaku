@@ -25,4 +25,9 @@ Instagram_URL：https://www.instagram.com/ait_runners
 Instagram_アカウント名：@ait_runners
 
 # --- 連絡先（お問い合わせページに反映）---
-連絡先メール：ait.track1959@gmail.com
+# ★迷惑メール対策のため、メールアドレスは「@」の前と後ろに分けて書きます。
+#   （こうすると、メールアドレスを自動収集する迷惑ボットに拾われにくくなります）
+#   例）example.taro@gmail.com の場合
+#     前半 → example.taro   後半 → gmail.com
+連絡先メール前半：ait.track1959
+連絡先メール後半：gmail.com

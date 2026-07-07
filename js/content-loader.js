@@ -20,6 +20,15 @@ async function fetchText(path) {
   }
 }
 
+/* データが読み込めなかったとき、そのセクションだけに案内を出す
+   （ページ全体が真っ白になったり、他のセクションが巻き込まれたりしない） */
+function showLoadNotice(el, fileName) {
+  if (!el) return;
+  el.innerHTML = `<p class="content-load-notice">データを読み込めませんでした。` +
+    `時間をおいて再読み込みするか、担当者は content/${fileName} の内容と` +
+    `アップロード漏れがないかを確認してください。</p>`;
+}
+
 /* 「#」コメント除去・全角/半角コロン両対応で1行を key/value に分解 */
 function splitKV(line) {
   const idx = line.search(/[：:]/);
@@ -161,12 +170,21 @@ async function applySite() {
     if (handle) handleEl.textContent = handle;
   });
 
-  /* 連絡先メール（お問い合わせページ） */
-  const mail = c['連絡先メール'];
+  /* 連絡先メール（お問い合わせページ）
+     ★迷惑メール対策：site.txt では「前半」「後半」に分けて書かれており、
+       ここ（実行時のJavaScript）ではじめて「前半@後半」に組み立てる。
+       HTMLやtxtに完成形のアドレスを書かないことで、アドレスを自動収集する
+       迷惑ボットに拾われにくくしている（人には今まで通り見える）。
+       旧形式「連絡先メール：〜」が書かれている場合もそのまま動く。 */
+  const mailFront = (c['連絡先メール前半'] || '').trim();
+  const mailBack  = (c['連絡先メール後半'] || '').trim();
+  const mail = (mailFront && mailBack)
+    ? mailFront + '\u0040' + mailBack          /* \u0040 は「@」のこと */
+    : (c['連絡先メール'] || '').trim();
   if (mail) {
     document.querySelectorAll('[data-site="contact-mail"]').forEach(el => {
       el.textContent = mail;
-      if (el.tagName === 'A') el.href = `mailto:${mail}`;
+      if (el.tagName === 'A') el.href = 'mailto:' + mail;
     });
   }
 }
@@ -178,7 +196,7 @@ async function applyCoach() {
   const wrap = document.getElementById('coach-wrap');
   if (!wrap) return;
   const text = await fetchText('/content/coach.txt');
-  if (!text) return;
+  if (!text) { showLoadNotice(wrap, 'coach.txt'); return; }
   const c = parseKV(text, ['経歴']);   // 「経歴：」だけ複数行ブロックとして読む
 
   const photo = c['写真'] ? `/images/${c['写真']}` : '';
@@ -234,10 +252,15 @@ function sortMembers(list) {
 async function applyMembers() {
   if (!document.getElementById('members-long')) return;
   const text = await fetchText('/content/members.txt');
-  if (!text) return;
+  if (!text) {
+    ['long', 'short', 'manager'].forEach(k =>
+      showLoadNotice(document.getElementById(`members-${k}`), 'members.txt'));
+    return;
+  }
 
   MEMBERS = parseRecords(text).map((r, i) => ({
     name:       r['氏名'] || '',
+    role:       (r['役職'] || '').trim(),   /* 主将・副将など。空欄なら表示しない */
     year:       parseInt(r['学年'], 10) || 0,
     faculty:    r['学部'] || '',
     department: r['学科'] || '',
@@ -251,8 +274,12 @@ async function applyMembers() {
   }));
 
   function card(m) {
+    /* 役職（主将など）がある人だけ、カード右上に金色バッジを表示 */
+    const roleBadge = m.role
+      ? `<span class="member-role-badge">${escapeHtml(m.role)}</span>` : '';
     return `<div class="member-card fade-up" data-member="${m._idx}" role="button" tabindex="0"
-                 aria-label="${escapeHtml(m.name)} の詳細を表示">
+                 aria-label="${escapeHtml(m.name)}${m.role ? '（' + escapeHtml(m.role) + '）' : ''} の詳細を表示">
+      ${roleBadge}
       <div class="member-avatar">${memberAvatar(m)}</div>
       <p class="member-name">${escapeHtml(m.name)}</p>
       <p class="member-year">${m.year}年生・${escapeHtml(m.faculty)}</p>
@@ -312,6 +339,7 @@ function setupMemberModal() {
     if (m.department) extra.push(['学科', m.department]);
 
     modal.querySelector('.member-modal-body').innerHTML = `
+      ${m.role ? `<span class="member-role-badge member-role-badge--modal">${escapeHtml(m.role)}</span>` : ''}
       <div class="member-modal-avatar">${memberAvatar(m)}</div>
       <p class="member-modal-name" id="member-modal-name">${escapeHtml(m.name)}</p>
       <p class="member-modal-year">${m.year}年生・${escapeHtml(m.faculty)}${m.block ? '・' + escapeHtml(m.block) : ''}</p>
@@ -351,7 +379,7 @@ async function applyEkiden() {
   const container = document.getElementById('ekiden-container');
   if (!container) return;
   const text = await fetchText('/content/ekiden.txt');
-  if (!text) return;
+  if (!text) { showLoadNotice(container, 'ekiden.txt'); return; }
 
   /* 【大会N】ごとに分割 */
   const blocks = text.split(/^\s*【[^】]*】\s*$/m).map(s => s.trim()).filter(Boolean);
@@ -462,7 +490,7 @@ function newsNewBadge(item) {
 
 async function loadNews() {
   const text = await fetchText('/content/news.txt');
-  if (!text) return [];
+  if (!text) return null;   /* 読み込み失敗（applyNews 側で案内を表示） */
   const items = parseRecords(text).map(r => {
     const d = parseNewsDate(r['日付']);
     return {
@@ -491,6 +519,10 @@ async function applyNews() {
   if (!topList && !pageList && !maintList) return;
 
   const items = await loadNews();
+  if (items === null) {
+    [topList, pageList, maintList].forEach(el => showLoadNotice(el, 'news.txt'));
+    return;
+  }
 
   /* --- トップページ：最新5件（1週間以内は NEW バッジ） --- */
   if (topList) {
@@ -628,10 +660,19 @@ async function applyNews() {
 /* ============================================================
    起動
    ============================================================ */
+/* 各セクションを独立して実行する。
+   どれか1つでエラーが起きても（txt の書式ミスなど）、他のセクションや
+   ページ全体は巻き込まれず、そのまま表示され続ける。 */
+function runSafely(name, fn) {
+  Promise.resolve().then(fn).catch(err => {
+    console.warn(`[content] ${name} の表示中にエラーが発生しました`, err);
+  });
+}
+
 document.addEventListener('DOMContentLoaded', () => {
-  applySite();
-  applyCoach();
-  applyMembers();
-  applyEkiden();
-  applyNews();
+  runSafely('site.txt',    applySite);
+  runSafely('coach.txt',   applyCoach);
+  runSafely('members.txt', applyMembers);
+  runSafely('ekiden.txt',  applyEkiden);
+  runSafely('news.txt',    applyNews);
 });

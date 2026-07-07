@@ -31,6 +31,9 @@ html { scroll-behavior: smooth; }
 body { font-family: var(--font); font-size: 16px; line-height: 1.7; color: var(--text); background: var(--primary); -webkit-font-smoothing: antialiased; overflow-x: clip; }
 img { max-width: 100%; height: auto; display: block; }
 a { color: inherit; text-decoration: none; }
+/* 【スマホの反応改善】タップ時の「ダブルタップ判定待ち」を無くし、
+   リンク・ボタンが1回のタップですぐ反応するようにする */
+a, button, [role="button"] { touch-action: manipulation; }
 ul, ol { list-style: none; }
 button { font-family: var(--font); cursor: pointer; }
 
@@ -102,7 +105,9 @@ button { font-family: var(--font); cursor: pointer; }
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.18);  /* 【調整】影を消すなら、この行を削除 */
   transition: transform var(--t);
 }
-.site-logo:hover { transform: translateY(-1px); }
+@media (hover: hover) and (pointer: fine) {
+  .site-logo:hover { transform: translateY(-1px); }
+}
 .site-logo img { height: 40px; width: auto; }   /* 【調整】ロゴの大きさは height */
 
 /* --- グローバルナビ（右端・紫ピル） --- */
@@ -127,7 +132,9 @@ button { font-family: var(--font); cursor: pointer; }
   transition: color var(--t), background var(--t);
 }
 /* カーソルを合わせると文字がふっと薄くなる */
-.global-nav a:hover { color: rgba(255, 255, 255, 0.6); }
+@media (hover: hover) and (pointer: fine) {
+  .global-nav a:hover { color: rgba(255, 255, 255, 0.6); }
+}
 /* いま見ているページの項目は、背景を濃いめに付けて示す。
    「記録」の子ページ（大会結果・自己ベスト・歴代記録）を見ているときも
    親の「記録」にこの濃い背景が付く（main.js の current 判定による）。 */
@@ -159,14 +166,24 @@ button { font-family: var(--font); cursor: pointer; }
   content: ""; position: absolute;
   top: -14px; left: -8px; right: -8px; height: 14px;
 }
-.has-dropdown:hover .dropdown,
+/* マウス環境のみ：ホバーで子メニューを開く（タッチ端末は「記録」タップで
+   親ページ /records へ移動し、そこから子ページへ進む動線になる） */
+@media (hover: hover) and (pointer: fine) {
+  .has-dropdown:hover .dropdown {
+    visibility: visible; opacity: 1; transform: translateY(0);
+    transition-delay: 0s;   /* 開くときは待たずにすぐ表示 */
+  }
+}
+/* キーボード操作（Tabキー）ではどの環境でも子メニューを開けるようにする */
 .has-dropdown:focus-within .dropdown {
   visibility: visible; opacity: 1; transform: translateY(0);
-  transition-delay: 0s;   /* 開くときは待たずにすぐ表示 */
+  transition-delay: 0s;
 }
 .dropdown li a { color: #ffffff; padding: 10px 18px; border-radius: 10px; font-size: 14px; }
 /* 子メニューもカーソルで文字が薄くなる */
-.dropdown li a:hover { color: rgba(255, 255, 255, 0.6); }
+@media (hover: hover) and (pointer: fine) {
+  .dropdown li a:hover { color: rgba(255, 255, 255, 0.6); }
+}
 /* いま見ている子ページの項目は背景を濃いめに */
 .dropdown li a.current { background: var(--nav-pill-bg-hover); }
 
@@ -181,7 +198,9 @@ button { font-family: var(--font); cursor: pointer; }
   border: none; padding: 11px 12px; border-radius: 999px;
   transition: background var(--t);
 }
-.hamburger:hover { background: var(--nav-pill-bg-hover); }
+@media (hover: hover) and (pointer: fine) {
+  .hamburger:hover { background: var(--nav-pill-bg-hover); }
+}
 .hamburger span { display: block; width: 24px; height: 2px; background: #ffffff; border-radius: 2px; transition: var(--t); }
 .hamburger.is-active span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
 .hamburger.is-active span:nth-child(2) { opacity: 0; }
@@ -196,6 +215,13 @@ button { font-family: var(--font); cursor: pointer; }
 .mobile-nav {
   display: none; position: fixed;
   top: 0; left: 0; right: 0; bottom: 0;
+  /* 【修正】スマホのブラウザ（Chrome/Google アプリ等）は下部ツールバーの
+     出入りで画面の高さが変わるため、bottom:0 だけでは下端に塗り残しが
+     出ることがある。動的ビューポート単位 dvh で常に画面全体を埋める。
+     （dvh 非対応の古い端末向けに 100vh も残してある） */
+  height: 100vh;
+  height: 100dvh;
+  min-height: 100%;
   background: rgba(69, 20, 160, 0.97); z-index: 999;
   /* 上の padding はヘッダー高さ + 12px。×ボタンとメニュー項目が重ならないための余白 */
   padding: calc(var(--header-h) + 12px) 24px 40px;
@@ -207,13 +233,17 @@ button { font-family: var(--font); cursor: pointer; }
   display: block; padding: 14px 16px; color: #fff;
   font-size: 17px; font-weight: 700; border-radius: 8px; transition: background var(--t);
 }
-.mobile-nav > ul > li > a:hover { background: rgba(255,255,255,0.13); }
+@media (hover: hover) and (pointer: fine) {
+  .mobile-nav > ul > li > a:hover { background: rgba(255,255,255,0.13); }
+}
 .mobile-sub { display: flex; flex-direction: column; gap: 2px; padding: 4px 0 4px 24px; }
 .mobile-sub a {
   display: block; padding: 10px 14px; color: rgba(255,255,255,0.78);
   font-size: 15px; border-radius: 6px; transition: background var(--t);
 }
-.mobile-sub a:hover { background: rgba(255,255,255,0.12); color: #fff; }
+@media (hover: hover) and (pointer: fine) {
+  .mobile-sub a:hover { background: rgba(255,255,255,0.12); color: #fff; }
+}
 
 /* モバイルメニューを開いている間だけロゴを隠す（#1）。
    main.js が開閉時に <body> へ .nav-open を付け外しします。
@@ -257,9 +287,11 @@ body.nav-open .site-logo {
   transform: translateY(0);
 }
 /* カーソルで矢印が薄くなり、ピルが少し浮く */
-.to-top.is-visible:hover {
-  color: rgba(255, 255, 255, 0.6);
-  transform: translateY(-3px);
+@media (hover: hover) and (pointer: fine) {
+  .to-top.is-visible:hover {
+    color: rgba(255, 255, 255, 0.6);
+    transform: translateY(-3px);
+  }
 }
 /* スマホの全画面メニューを開いている間は隠す（メニューと重ならないように） */
 body.nav-open .to-top { opacity: 0; visibility: hidden; pointer-events: none; }
@@ -336,12 +368,16 @@ body.nav-open .to-top { opacity: 0; visibility: hidden; pointer-events: none; }
   border-radius: 6px; 
   transition: background var(--t);
 }
-.news-item:hover { background: var(--primary-light); }
+@media (hover: hover) and (pointer: fine) {
+  .news-item:hover { background: var(--primary-light); }
+}
 .news-date { font-size: 13px; color: var(--sub); white-space: nowrap; flex-shrink: 0; margin-top: 2px; }
 .news-title { font-size: 15px; color: var(--text); }
-.news-item .news-item-inner .news-title:hover {
-  text-decoration: underline; 
-  color: var(--primary);
+@media (hover: hover) and (pointer: fine) {
+  .news-item .news-item-inner .news-title:hover {
+    text-decoration: underline; 
+    color: var(--primary);
+  }
 }
 .news-title::after {
   content: "→";
@@ -352,9 +388,11 @@ body.nav-open .to-top { opacity: 0; visibility: hidden; pointer-events: none; }
   text-decoration: none;
   display: inline-block;
 }
-.news-item:has(a.news-item-inner):hover .news-title::after {
-  opacity: 1;
-  margin-left: 8px;
+@media (hover: hover) and (pointer: fine) {
+  .news-item:has(a.news-item-inner):hover .news-title::after {
+    opacity: 1;
+    margin-left: 8px;
+  }
 }
 .btn-more {
   display: inline-flex; align-items: center; gap: 8px;
@@ -363,7 +401,9 @@ body.nav-open .to-top { opacity: 0; visibility: hidden; pointer-events: none; }
   border-radius: 24px; font-size: 14px; font-weight: 700;
   transition: background var(--t), transform var(--t);
 }
-.btn-more:hover { background: var(--primary-dark); transform: translateX(3px); }
+@media (hover: hover) and (pointer: fine) {
+  .btn-more:hover { background: var(--primary-dark); transform: translateX(3px); }
+}
 
 /* === Coach === */
 .coach-wrap {
@@ -401,7 +441,9 @@ body.nav-open .to-top { opacity: 0; visibility: hidden; pointer-events: none; }
   padding: 26px 36px; border: 2px solid var(--border); border-radius: 14px; min-width: 168px;
   transition: border-color var(--t), transform var(--t), box-shadow var(--t);
 }
-.sns-card:hover { border-color: var(--primary); transform: translateY(-4px); box-shadow: var(--shadow); }
+@media (hover: hover) and (pointer: fine) {
+  .sns-card:hover { border-color: var(--primary); transform: translateY(-4px); box-shadow: var(--shadow); }
+}
 .sns-card svg { width: 32px; height: 32px; }
 .sns-name { font-size: 14px; font-weight: 700; }
 .sns-handle { font-size: 12px; color: var(--sub); }
@@ -423,7 +465,9 @@ body.nav-open .to-top { opacity: 0; visibility: hidden; pointer-events: none; }
    （align-items:flex-start + width:fit-content で横いっぱいに広がらないようにする） */
 .f-nav-links { display: flex; flex-direction: column; align-items: flex-start; gap: 9px; }
 .f-nav-links a { display: inline-block; width: fit-content; font-size: 14px; color: rgba(255,255,255,0.82); transition: color var(--t); }
-.f-nav-links a:hover { color: #fff; }
+@media (hover: hover) and (pointer: fine) {
+  .f-nav-links a:hover { color: #fff; }
+}
 .f-nav-links .sub { margin-left: 14px; font-size: 13px; color: rgba(255,255,255,0.56); }
 .f-sns { display: flex; flex-direction: column; gap: 10px; margin-bottom: 24px; }
 .f-sns-link {
@@ -432,7 +476,9 @@ body.nav-open .to-top { opacity: 0; visibility: hidden; pointer-events: none; }
   border-radius: 8px; font-size: 13px; font-weight: 700; color: #fff;
   transition: background var(--t); width: fit-content;
 }
-.f-sns-link:hover { background: rgba(255,255,255,0.22); }
+@media (hover: hover) and (pointer: fine) {
+  .f-sns-link:hover { background: rgba(255,255,255,0.22); }
+}
 .f-qr { display: flex; gap: 24px; }
 .f-qr-item { text-align: center; }
 .f-qr-box {
@@ -452,11 +498,17 @@ body.nav-open .to-top { opacity: 0; visibility: hidden; pointer-events: none; }
   transition: all var(--t); text-decoration: none;
 }
 .btn-primary { background: var(--primary); color: #fff; border-color: var(--primary); }
-.btn-primary:hover { background: var(--primary-dark); border-color: var(--primary-dark); transform: translateY(-2px); box-shadow: var(--shadow); }
+@media (hover: hover) and (pointer: fine) {
+  .btn-primary:hover { background: var(--primary-dark); border-color: var(--primary-dark); transform: translateY(-2px); box-shadow: var(--shadow); }
+}
 .btn-outline { background: #fff; color: var(--primary); border-color: var(--primary); }
-.btn-outline:hover { background: var(--primary); color: #fff; }
+@media (hover: hover) and (pointer: fine) {
+  .btn-outline:hover { background: var(--primary); color: #fff; }
+}
 .btn-accent { background: var(--accent); color: var(--text); border-color: var(--accent); }
-.btn-accent:hover { background: var(--accent-dark); border-color: var(--accent-dark); }
+@media (hover: hover) and (pointer: fine) {
+  .btn-accent:hover { background: var(--accent-dark); border-color: var(--accent-dark); }
+}
 
 /* === Block Nav === */
 .block-nav { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; margin-bottom: 48px; }
@@ -465,9 +517,11 @@ body.nav-open .to-top { opacity: 0; visibility: hidden; pointer-events: none; }
   color: var(--primary); border-radius: 32px; font-size: 15px; font-weight: 700;
   font-family: var(--font); cursor: pointer; transition: all var(--t); display: inline-block;
 }
-.block-nav-btn:hover, .block-nav-btn.active {
-  background: var(--primary); color: #fff;
-  transform: translateY(-2px); box-shadow: 0 4px 12px rgba(109,40,217,0.3);
+@media (hover: hover) and (pointer: fine) {
+  .block-nav-btn:hover, .block-nav-btn.active {
+    background: var(--primary); color: #fff;
+    transform: translateY(-2px); box-shadow: 0 4px 12px rgba(109,40,217,0.3);
+  }
 }
 
 /* === Member Cards === */
@@ -480,12 +534,32 @@ body.nav-open .to-top { opacity: 0; visibility: hidden; pointer-events: none; }
 .members-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; }
 
 .member-card {
+  position: relative;   /* 役職バッジ（右上）の基準にする */
   background: #fff; border: 1.5px solid var(--primary); border-radius: var(--radius);
   padding: 28px 18px 22px; text-align: center;
   box-shadow: 0 1px 4px rgba(0,0,0,0.07);
   transition: transform var(--t), box-shadow var(--t);
 }
-.member-card:hover { transform: translateY(-5px); box-shadow: var(--shadow-lg); }
+
+/* ---- 役職バッジ（members.txt の「役職：」に記入がある人だけ表示）----
+   【調整】色を変えたいとき：background（金）と color（文字色）を変更 */
+.member-role-badge {
+  position: absolute; top: 10px; right: 10px;
+  background: var(--accent); color: #1F2937;
+  font-size: 12px; font-weight: 700; line-height: 1;
+  padding: 6px 10px; border-radius: 999px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.15);
+  letter-spacing: 0.04em;
+  pointer-events: none;   /* バッジの上でもカードのクリックが効くように */
+}
+/* 拡大表示（モーダル）では左上に表示する */
+.member-role-badge--modal {
+  right: auto; left: 14px; top: 14px;
+  font-size: 13px; padding: 7px 12px;
+}
+@media (hover: hover) and (pointer: fine) {
+  .member-card:hover { transform: translateY(-5px); box-shadow: var(--shadow-lg); }
+}
 .member-avatar {
   width: 110px; height: 110px; border-radius: 50%;
   margin: 0 auto 16px; overflow: hidden;
@@ -511,7 +585,9 @@ body.nav-open .to-top { opacity: 0; visibility: hidden; pointer-events: none; }
   font-size: 20px; font-weight: 700; text-decoration: none;
   transition: transform var(--t), box-shadow var(--t);
 }
-.rec-banner:hover { transform: translateY(-3px); box-shadow: var(--shadow-lg); }
+@media (hover: hover) and (pointer: fine) {
+  .rec-banner:hover { transform: translateY(-3px); box-shadow: var(--shadow-lg); }
+}
 .rec-banner--purple { background: var(--primary); color: #fff; }
 .rec-banner--gold { background: var(--primary); color: #fff; }
 .rec-banner-icon { font-size: 26px; }
@@ -523,7 +599,9 @@ body.nav-open .to-top { opacity: 0; visibility: hidden; pointer-events: none; }
 .records-table { width: 100%; border-collapse: collapse; min-width: 540px; }
 .records-table thead th { background: var(--primary); color: #fff; padding: 13px 16px; font-size: 13px; font-weight: 700; text-align: left; white-space: nowrap; }
 .records-table tbody tr:nth-child(even) { background: var(--bg-light); }
-.records-table tbody tr:hover { background: var(--primary-light); }
+@media (hover: hover) and (pointer: fine) {
+  .records-table tbody tr:hover { background: var(--primary-light); }
+}
 .records-table td { padding: 11px 16px; font-size: 14px; border-bottom: 1px solid var(--border); vertical-align: middle; }
 .badge { display: inline-block; padding: 2px 9px; border-radius: 10px; font-size: 11px; font-weight: 700; }
 .badge-gold { background: var(--accent); color: var(--text); }
@@ -532,13 +610,17 @@ body.nav-open .to-top { opacity: 0; visibility: hidden; pointer-events: none; }
 /* === Year Nav / Tabs === */
 .year-nav { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 28px; }
 .year-btn { padding: 8px 18px; border: 2px solid var(--primary); background: #fff; color: var(--primary); border-radius: 22px; font-size: 13px; font-weight: 700; font-family: var(--font); cursor: pointer; transition: all var(--t); }
-.year-btn:hover, .year-btn.active { background: var(--primary); color: #fff; }
+@media (hover: hover) and (pointer: fine) {
+  .year-btn:hover, .year-btn.active { background: var(--primary); color: #fff; }
+}
 .year-section { display: none; }
 .year-section.active { display: block; }
 
 .tab-nav { display: flex; gap: 10px; border-bottom: 2px solid var(--border); margin-bottom: 28px; }
 .tab-btn { padding: 11px 22px; background: none; border: none; border-bottom: 3px solid transparent; margin-bottom: -2px; font-size: 15px; font-weight: 700; font-family: var(--font); color: var(--sub); cursor: pointer; transition: all var(--t); }
-.tab-btn:hover { color: var(--primary); }
+@media (hover: hover) and (pointer: fine) {
+  .tab-btn:hover { color: var(--primary); }
+}
 .tab-btn.active { color: var(--primary); border-bottom-color: var(--primary); }
 .tab-content { display: none; }
 .tab-content.active { display: block; }
@@ -657,8 +739,10 @@ body.nav-open .to-top { opacity: 0; visibility: hidden; pointer-events: none; }
   cursor: pointer;
 }
 
-.restore-btn:hover {
-  opacity: 0.9;
+@media (hover: hover) and (pointer: fine) {
+  .restore-btn:hover {
+    opacity: 0.9;
+  }
 }
 
 .empty-hidden {
@@ -769,7 +853,9 @@ body.nav-open .to-top { opacity: 0; visibility: hidden; pointer-events: none; }
   text-decoration: none;
   color: inherit;
 }
-.news-page-item:hover { background: var(--primary-light); }
+@media (hover: hover) and (pointer: fine) {
+  .news-page-item:hover { background: var(--primary-light); }
+}
 .news-page-item--plain { cursor: default; }
 /* 背景色の変更(現在：カーソルを合わせると紫になる) */
 /* .news-page-item--plain:hover { background: transparent; } */
@@ -788,8 +874,10 @@ body.nav-open .to-top { opacity: 0; visibility: hidden; pointer-events: none; }
 /* .news-page-item:not(.news-page-item--plain) .news-page-title {
   color: var(--primary);
 } */
-.news-page-item:not(.news-page-item--plain) .news-page-title:hover {
-  text-decoration: underline;
+@media (hover: hover) and (pointer: fine) {
+  .news-page-item:not(.news-page-item--plain) .news-page-title:hover {
+    text-decoration: underline;
+  }
 }
 
 
@@ -818,19 +906,25 @@ body.nav-open .to-top { opacity: 0; visibility: hidden; pointer-events: none; }
   display: inline-block;
 }
 
-.news-page-item:not(.news-page-item--plain):hover {
-  background: var(--primary-light);
+@media (hover: hover) and (pointer: fine) {
+  .news-page-item:not(.news-page-item--plain):hover {
+    background: var(--primary-light);
+  }
 }
 
-.news-page-item:not(.news-page-item--plain):hover .news-page-title {
-  color: var(--primary);
-  text-decoration: underline;
+@media (hover: hover) and (pointer: fine) {
+  .news-page-item:not(.news-page-item--plain):hover .news-page-title {
+    color: var(--primary);
+    text-decoration: underline;
+  }
 }
 
-.news-page-item:not(.news-page-item--plain):hover
-.news-page-title::after {
-  opacity: 1;
-  margin-left: 8px;
+@media (hover: hover) and (pointer: fine) {
+  .news-page-item:not(.news-page-item--plain):hover
+  .news-page-title::after {
+    opacity: 1;
+    margin-left: 8px;
+  }
 }
 
 /* ============================================================
@@ -922,7 +1016,9 @@ body.nav-open .to-top { opacity: 0; visibility: hidden; pointer-events: none; }
   text-decoration: none;
   transition: all var(--t);
 }
-.article-back-btn:hover { background: var(--primary); color: #fff; }
+@media (hover: hover) and (pointer: fine) {
+  .article-back-btn:hover { background: var(--primary); color: #fff; }
+}
 
 /* プレースホルダー（写真未設定） */
 .img-placeholder {
@@ -1014,7 +1110,9 @@ body.nav-open .to-top { opacity: 0; visibility: hidden; pointer-events: none; }
   font-size: 22px; line-height: 1; color: var(--sub); cursor: pointer;
   transition: all var(--t);
 }
-.member-modal-close:hover { background: var(--primary); color: #fff; }
+@media (hover: hover) and (pointer: fine) {
+  .member-modal-close:hover { background: var(--primary); color: #fff; }
+}
 .member-modal-avatar {
   width: 128px; height: 128px; border-radius: 50%; overflow: hidden;
   margin: 0 auto 16px; background: var(--bg-light); border: 3px solid var(--primary);
@@ -1051,6 +1149,13 @@ body.nav-open .to-top { opacity: 0; visibility: hidden; pointer-events: none; }
   color: var(--sub); background: var(--bg-light); border-radius: var(--radius);
 }
 .records-error { color: var(--text); border: 1px solid var(--border); }
+
+/* content/*.txt が読み込めなかったときの案内（セクション単位で表示） */
+.content-load-notice {
+  text-align: center; padding: 32px 20px; font-size: 14px; line-height: 1.9;
+  color: var(--text); background: var(--bg-light);
+  border: 1px solid var(--border); border-radius: var(--radius);
+}
 
 /* ============================================================
    読み込み中メッセージ（表示に時間がかかる埋め込み用）
@@ -1166,10 +1271,12 @@ body.nav-open .to-top { opacity: 0; visibility: hidden; pointer-events: none; }
   white-space: nowrap;
   transition: background var(--t), color var(--t), border-color var(--t);
 }
-.hide-player-btn:hover {
-  background: var(--primary);
-  color: #fff;
-  border-color: var(--primary);
+@media (hover: hover) and (pointer: fine) {
+  .hide-player-btn:hover {
+    background: var(--primary);
+    color: #fff;
+    border-color: var(--primary);
+  }
 }
 
 /* --- #3 NEW バッジ（表示から1週間以内のニュース） --- */
@@ -1213,10 +1320,12 @@ body.nav-open .to-top { opacity: 0; visibility: hidden; pointer-events: none; }
   font-weight: 700;
   transition: background var(--t), color var(--t), border-color var(--t);
 }
-.news-pager button:hover:not(:disabled):not(.active) {
-  background: var(--primary-light);
-  border-color: var(--primary);
-  color: var(--primary);
+@media (hover: hover) and (pointer: fine) {
+  .news-pager button:hover:not(:disabled):not(.active) {
+    background: var(--primary-light);
+    border-color: var(--primary);
+    color: var(--primary);
+  }
 }
 .news-pager button.active {
   background: var(--primary);

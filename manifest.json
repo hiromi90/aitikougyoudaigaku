@@ -1,0 +1,28 @@
+{
+  "name": "愛知工業大学 陸上競技部 公式サイト",
+  "short_name": "愛工大陸上部",
+  "start_url": "/",
+  "display": "browser",
+  "background_color": "#6D28D9",
+  "theme_color": "#6D28D9",
+  "icons": [
+    {
+      "src": "/images/head/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/images/head/logo.png",
+      "sizes": "400x400",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/images/head/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
+}

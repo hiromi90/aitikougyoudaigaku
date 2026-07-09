@@ -499,7 +499,7 @@ function parseEkidenBlock(text) {
    ------------------------------------------------------------
    ・記事の追加は content/news.txt に書くだけ（js編集は不要）
    ・日付の新しい順に自動で並びます（書く順番は自由）
-   ・ニュースページは「6ヶ月以内」だけ表示（自動非表示）
+   ・ニュースページは「1年以内」だけ表示（自動非表示）
    ・/news/maintenance/ で期限切れ記事の削除リストを確認できます
    ============================================================ */
 
@@ -589,12 +589,12 @@ async function applyNews() {
     observeFadeUp(topList);
   }
 
-  /* --- ニュースページ：6ヶ月以内のみ表示（自動非表示）＋ 1ページ10件のページ送り --- */
-  const now  = new Date();
-  const half = new Date(now.getFullYear(), now.getMonth() - 6, now.getDate());
+  /* --- ニュースページ：1年以内のみ表示（自動非表示）＋ 1ページ10件のページ送り --- */
+  const now    = new Date();
+  const cutoff = new Date(now.getFullYear(), now.getMonth() - 12, now.getDate());
 
   if (pageList) {
-    const visible = items.filter(n => n.date && n.date >= half);
+    const visible = items.filter(n => n.date && n.date >= cutoff);
     const PER_PAGE = 10;
     const pageCount = Math.max(1, Math.ceil(visible.length / PER_PAGE));
 
@@ -649,7 +649,7 @@ async function applyNews() {
 
     function renderNewsPage(page) {
       if (!visible.length) {
-        pageList.innerHTML = '<p class="news-empty">現在、直近6ヶ月以内のニュースはありません。</p>';
+        pageList.innerHTML = '<p class="news-empty">現在、直近1年以内のニュースはありません。</p>';
         pager.innerHTML = '';
         return;
       }
@@ -679,9 +679,9 @@ async function applyNews() {
 
   /* --- 整理用ページ（/news/maintenance/）：期限切れの削除リスト --- */
   if (maintList) {
-    const expired = items.filter(n => !n.date || n.date < half);
+    const expired = items.filter(n => !n.date || n.date < cutoff);
     if (!expired.length) {
-      maintList.innerHTML = '<p class="news-empty">✅ 期限切れ（6ヶ月以上前）のニュースはありません。整理は不要です。</p>';
+      maintList.innerHTML = '<p class="news-empty">✅ 期限切れ（1年以上前）のニュースはありません。整理は不要です。</p>';
       return;
     }
     maintList.innerHTML = expired.map(n => {

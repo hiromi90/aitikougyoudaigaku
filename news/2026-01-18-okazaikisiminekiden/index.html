@@ -13,9 +13,10 @@
 <style>
   /* =========================================================
      【この記事専用スタイル】横長メイン画像2枚を「カルーセル」で表示
-     ・カルーセルの初回実装（2026-07-10）。記事ページ内に完結。
-       グローバルの css/style.css・js/main.js には手を加えていません。
-     ・操作：左右矢印ボタン／ドット／スワイプ／キーボード←→
+     ・カルーセルの初回実装（2026-07-10）／操作バーを写真の下へ変更（2026-07-10 改）。
+       記事ページ内に完結。グローバルの css/style.css・js/main.js には手を加えていません。
+     ・操作ボタン（矢印・ドット）は写真の下の操作バーにまとめ、写真には重ねない。
+       スワイプ／キーボード←→ にも対応。
      ・クラス名は衝突回避のため .news-carousel / .nc-* に統一
      【調整】--nc-max＝カルーセルの最大幅（横長向け）
      ========================================================= */
@@ -45,37 +46,35 @@
     height:auto;
     display:block;
   }
+  /* キャプション（スライドに応じて切り替え） */
+  .nc-cap{
+    text-align:center;
+    font-size:13px;
+    color:#6B7280;               /* デザイン仕様のサブグレー */
+    margin:8px 0 0;
+  }
+  /* 操作バー（写真の下・重ねない）：矢印 ─ ドット ─ 矢印 を中央に並べる */
+  .nc-controls{
+    display:flex;align-items:center;justify-content:center;gap:14px;
+    margin-top:8px;
+  }
   /* 左右の矢印（タップ領域44px以上） */
   .nc-arrow{
-    position:absolute;
-    top:50%;
-    transform:translateY(-50%);
+    flex:0 0 auto;
     width:44px;height:44px;
     border:none;border-radius:50%;
     background:rgba(75,20,145,0.55);      /* サイトの紫ピルと同系色 */
     color:#fff;font-size:26px;line-height:1;
     display:flex;align-items:center;justify-content:center;
     cursor:pointer;
-    -webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px);
     touch-action:manipulation;
-    z-index:2;
   }
-  .nc-prev{ left:8px; }
-  .nc-next{ right:8px; }
   @media (hover:hover) and (pointer:fine){
     .nc-arrow:hover{ background:rgba(75,20,145,0.78); }
   }
-  /* キャプション（スライドに応じて切り替え） */
-  .nc-cap{
-    text-align:center;
-    font-size:13px;
-    color:#6B7280;               /* デザイン仕様のサブグレー */
-    margin:6px 0 0;
-  }
   /* ドット（現在位置＝紫） */
   .nc-dots{
-    display:flex;justify-content:center;gap:10px;
-    margin-top:10px;
+    display:flex;align-items:center;gap:10px;
   }
   .nc-dot{
     position:relative;
@@ -130,13 +129,16 @@
               <img src="/images/news/2026-01-18-02.png" alt="結果">
             </figure>
           </div>
-          <button type="button" class="nc-arrow nc-prev" aria-label="前の写真">‹</button>
-          <button type="button" class="nc-arrow nc-next" aria-label="次の写真">›</button>
         </div>
         <p class="nc-cap" aria-live="polite">結果</p>
-        <div class="nc-dots" role="tablist" aria-label="写真の切り替え">
-          <button type="button" class="nc-dot is-active" aria-label="1枚目を表示"></button>
-          <button type="button" class="nc-dot" aria-label="2枚目を表示"></button>
+        <!-- 操作バー：写真の下にまとめて配置（写真に重ねない） -->
+        <div class="nc-controls">
+          <button type="button" class="nc-arrow nc-prev" aria-label="前の写真">‹</button>
+          <div class="nc-dots" role="tablist" aria-label="写真の切り替え">
+            <button type="button" class="nc-dot is-active" aria-label="1枚目を表示"></button>
+            <button type="button" class="nc-dot" aria-label="2枚目を表示"></button>
+          </div>
+          <button type="button" class="nc-arrow nc-next" aria-label="次の写真">›</button>
         </div>
       </div>
 

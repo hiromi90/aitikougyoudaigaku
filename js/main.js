@@ -812,7 +812,7 @@ document.addEventListener(
           }
           if (h === pbKey) {
             const t = String(v == null ? "" : v).trim().toUpperCase();
-            if (t === "PB" || t === "SB") {
+            if (/PB|SB/.test(t)) {
               return `<td><span class="badge badge-gold">${escapeResultHtml(t)}</span></td>`;
             }
           }

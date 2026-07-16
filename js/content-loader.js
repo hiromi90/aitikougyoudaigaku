@@ -6,6 +6,23 @@
      編集は content/ フォルダの .txt だけでOKです。
    ============================================================ */
 
+/* ---------- 【調整】部員紹介：「一言」の表示設定 ---------- */
+/* ここに書いたブロックの部員は、カード・拡大表示（モーダル）とも
+   「一言」を表示しません。content/members.txt の文章はそのまま残るので、
+   下の配列を書き換えるだけで表示・非表示を切り替えられます。
+     ['短距離']            … 短距離だけ隠す（現在の設定）
+     []                    … 全員の一言を表示する（元に戻すときはこれ）
+     ['短距離', '長距離']  … 複数ブロックを隠すときはカンマで並べる
+   ※ ブロック名は members.txt の「ブロック：」と同じ文字で書いてください。 */
+const COMMENT_HIDDEN_BLOCKS = ['短距離'];
+
+/* その部員の「一言」を表示してよいか
+   （上の設定で隠すブロック、または一言が空欄の人は表示しない） */
+function memberCommentVisible(m) {
+  if (!m || !String(m.comment || '').trim()) return false;   // 空欄なら「」を出さない
+  return !COMMENT_HIDDEN_BLOCKS.includes(m.block);
+}
+
 /* ---------- 共通ユーティリティ ---------- */
 
 /* テキストファイルを読み込む（失敗しても止まらない） */
@@ -285,7 +302,7 @@ async function applyMembers() {
       <p class="member-year">${m.year}年生・${escapeHtml(m.faculty)}</p>
       <p class="member-event">得意種目：${escapeHtml(m.event)}</p>
       <p class="member-school">出身校：${escapeHtml(m.school)}</p>
-      <p class="member-comment">「${escapeHtml(m.comment)}」</p>
+      ${memberCommentVisible(m) ? `<p class="member-comment">「${escapeHtml(m.comment)}」</p>` : ''}
       <span class="member-more">詳しく見る ＋</span>
     </div>`;
   }
@@ -353,7 +370,8 @@ function setupMemberModal() {
         <div><dt>出身校</dt><dd>${escapeHtml(m.school) || '—'}</dd></div>
         ${extra.map(([k, v]) => `<div><dt>${escapeHtml(k)}</dt><dd>${escapeHtml(v)}</dd></div>`).join('')}
       </dl>
-      <blockquote class="member-modal-comment">「${escapeHtml(m.comment)}」</blockquote>`;
+      ${memberCommentVisible(m)
+        ? `<blockquote class="member-modal-comment">「${escapeHtml(m.comment)}」</blockquote>` : ''}`;
 
     modal.classList.add('is-open');
     modal.setAttribute('aria-hidden', 'false');

@@ -646,6 +646,9 @@ document.addEventListener(
      （メモ帳で編集できます。jsファイルの編集は不要です）。
    ※ 大会は「シート名に書かれた開催日」の新しい順に
      自動で上から表示されます。タブを足す位置は自由です。
+   ※ 開催日は「2026年4月4日」のほか、複数日の大会の
+     「2026年4月4-5日」「2026年4月4・5日」「2026年4月4日〜5日」等も
+     読み取れます（初日を基準に並べます）。
    ---------------------------------------------------------- */
 (async function () {
   const nav = document.getElementById("results-year-nav");
@@ -754,11 +757,35 @@ document.addEventListener(
 
   const onlyDigits = s => String(s == null ? "" : s).replace(/[^0-9]/g, "");
 
-  /* シート名の開催日「2026年3月28日」等 → Date（読めなければ null） */
+  /* シート名の開催日「2026年3月28日」等 → Date（読めなければ null）
+     ------------------------------------------------------------------
+     「年 → 月 → そのあとに最初に出てくる数字」を開催日（初日）として読む。
+     区切り記号の種類は問わないので、次はすべて 4月4日（初日）と判定する：
+       2026年4月4日 ／ 2026年4月4-5日 ／ 2026年4月4・5日 ／ 2026年4月4〜5日
+       2026年4月4日〜5日 ／ 2026年4月4,5日 ／ 2026年4月4日・5日
+     ・月またぎ・年またぎ（例：2026年4月30日〜5月1日）も先頭の日付＝初日で判定。
+     ・日が書かれていないとき（例：2026年4月）は、その月の1日として扱う。
+     ・全角数字（２０２６年…）でも読める。
+     ・月が13以上・存在しない日（4月31日）など明らかな誤記は
+       「日付なし」扱い（＝末尾に回す）にして安全側に倒す。 */
   function parseCompDate(title) {
-    const m = String(title || "").match(/(\d{4})年\s*(\d{1,2})月\s*(\d{1,2})日/);
+    /* 全角数字を半角に直してから判定する */
+    const text = String(title == null ? "" : title)
+      .replace(/[０-９]/g, ch => String.fromCharCode(ch.charCodeAt(0) - 0xFEE0));
+
+    /* 「日」は無くてもよい。月のあとの最初の数字を初日とみなす */
+    const m = text.match(/(\d{4})\s*年\s*(\d{1,2})\s*月\s*(\d{1,2})?/);
     if (!m) return null;
-    return new Date(Number(m[1]), Number(m[2]) - 1, Number(m[3]));
+
+    const y  = Number(m[1]);
+    const mo = Number(m[2]);
+    const d  = (m[3] === undefined) ? 1 : Number(m[3]);   // 日なし → その月の1日
+    if (mo < 1 || mo > 12 || d < 1 || d > 31) return null;
+
+    const dt = new Date(y, mo - 1, d);
+    /* 存在しない日（例：2026年4月31日）は日付なし扱い */
+    if (dt.getFullYear() !== y || dt.getMonth() !== mo - 1 || dt.getDate() !== d) return null;
+    return dt;
   }
 
   /* 大会を「開催日の新しい順」に並べ替える。

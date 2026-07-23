@@ -668,9 +668,46 @@ body.nav-open .to-top { opacity: 0; visibility: hidden; pointer-events: none; }
 .tab-content.active { display: block; }
 
 /* === Competition Section Header === */
-.comp-head { background: var(--primary-light); border-left: 4px solid var(--primary); padding: 12px 20px; margin: 36px 0 14px; border-radius: 0 8px 8px 0; }
+/* 大会ごとのまとまり（見出しボックス＋記録テーブル） */
+.comp-item { margin-bottom: 36px; }
+
+/* 見出しボックス。クリックで記録の表示／非表示を切り替えます。
+   下に印（∨）を置くぶん、下側の余白を広めに取っています。 */
+.comp-head {
+  background: var(--primary-light); border-left: 4px solid var(--primary);
+  padding: 12px 20px 22px; margin: 36px 0 0; border-radius: 0 8px 8px 0;
+  position: relative; cursor: pointer;
+  transition: opacity 0.2s ease, background 0.2s ease;
+  -webkit-tap-highlight-color: transparent;
+}
 .comp-name { font-size: 16px; font-weight: 700; color: var(--primary); }
 .comp-meta { font-size: 13px; color: var(--sub); margin-top: 3px; }
+
+/* 下中央の印（∨）。開くと上向き（∧）に回ります */
+.comp-toggle {
+  position: absolute; left: 50%; bottom: 9px;
+  width: 10px; height: 10px; margin-left: -5px;
+  border-right: 2px solid var(--primary); border-bottom: 2px solid var(--primary);
+  transform: translateY(-3px) rotate(45deg);
+  transition: transform 0.25s ease;
+}
+.comp-head[aria-expanded="true"] .comp-toggle {
+  transform: translateY(2px) rotate(-135deg);
+}
+
+/* マウスを乗せたときだけ薄くする（スマホの誤作動を防ぐため hover 対応機器に限定） */
+@media (hover: hover) and (pointer: fine) {
+  .comp-head:hover { opacity: 0.6; }
+}
+.comp-head:focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; }
+
+/* 記録テーブル側。閉じているときは hidden 属性で隠します */
+.comp-body { margin-top: 14px; animation: comp-open 0.25s ease; }
+.comp-body[hidden] { display: none; }
+@keyframes comp-open {
+  from { opacity: 0; transform: translateY(-4px); }
+  to   { opacity: 1; transform: none; }
+}
 
 /* === History Page === */
 .history-hero { padding: 72px 24px; text-align: center; background: #231342; }

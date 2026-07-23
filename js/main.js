@@ -655,6 +655,32 @@ document.addEventListener(
   const content = document.getElementById("results-content");
   if (!nav || !content) return;
 
+  /* --- 大会見出しボックスの開閉 -------------------------------
+     ボックス内のどこを押しても、その大会の記録が表示／非表示に
+     切り替わります。複数の大会を同時に開いたままにできます。
+     この登録は1回だけ。中身（content）が入れ替わっても
+     親要素で受け取るので付け直す必要はありません。 */
+  function toggleComp(head) {
+    const body = document.getElementById(head.getAttribute("aria-controls"));
+    const isOpen = head.getAttribute("aria-expanded") === "true";
+    head.setAttribute("aria-expanded", isOpen ? "false" : "true");
+    if (body) body.hidden = isOpen;
+  }
+
+  content.addEventListener("click", e => {
+    const head = e.target.closest(".comp-head");
+    if (head) toggleComp(head);
+  });
+
+  /* キーボード操作（Enter／スペース）にも対応 */
+  content.addEventListener("keydown", e => {
+    if (e.key !== "Enter" && e.key !== " " && e.key !== "Spacebar") return;
+    const head = e.target.closest(".comp-head");
+    if (!head) return;
+    e.preventDefault();
+    toggleComp(head);
+  });
+
   /* --- content/results.txt を読み込んで「年度：URL」を取り出す --- */
   let years = [];
   try {
@@ -811,17 +837,27 @@ document.addEventListener(
 
     sheets = sortSheetsByDate(sheets);
 
-    content.innerHTML = sheets.map(sheet => {
+    content.innerHTML = sheets.map((sheet, idx) => {
       const title = parseCompTitle(sheet.sheet || sheet.name || "");
       const rows = Array.isArray(sheet.data) ? sheet.data : [];
+      const bodyId = `comp-body-${year}-${idx}`;
 
-      const head = `<div class="comp-head fade-up">
+      /* 見出しボックス。ボックス内のどこを押しても開閉できるよう
+         ボタンとして扱い、下中央に印（.comp-toggle）を置きます。
+         初期状態は「すべて閉じた状態」です。 */
+      const head = `<div class="comp-head fade-up" role="button" tabindex="0"
+        aria-expanded="false" aria-controls="${bodyId}">
         <p class="comp-name">${escapeResultHtml(title.name)}</p>
         ${title.meta ? `<p class="comp-meta">${escapeResultHtml(title.meta)}</p>` : ""}
+        <span class="comp-toggle" aria-hidden="true"></span>
       </div>`;
 
       if (!rows.length) {
-        return head + `<p class="records-empty" style="margin-bottom:30px;">この大会のデータはまだ入力されていません。</p>`;
+        return `<div class="comp-item">${head}
+          <div class="comp-body" id="${bodyId}" hidden>
+            <p class="records-empty">この大会のデータはまだ入力されていません。</p>
+          </div>
+        </div>`;
       }
 
       const headers = Object.keys(rows[0]);
@@ -848,14 +884,20 @@ document.addEventListener(
         return `<tr${isFirst ? ' class="badge-rank1-row"' : ""}>${cells}</tr>`;
       }).join("");
 
-      return head +
-        `<p class="scroll-hint">← 横にスクロールできます →</p>
-         <div class="table-wrap fade-up" style="margin-bottom:36px;">
-           <table class="records-table">
-             <thead><tr>${thead}</tr></thead>
-             <tbody>${tbody}</tbody>
-           </table>
-         </div>`;
+      /* テーブル側は閉じているあいだ画面に出ないため、
+         fade-up（スクロール連動フェード）は付けません。
+         代わりに開いたときに .comp-body 側でふわっと表示します。 */
+      return `<div class="comp-item">${head}
+        <div class="comp-body" id="${bodyId}" hidden>
+          <p class="scroll-hint">← 横にスクロールできます →</p>
+          <div class="table-wrap">
+            <table class="records-table">
+              <thead><tr>${thead}</tr></thead>
+              <tbody>${tbody}</tbody>
+            </table>
+          </div>
+        </div>
+      </div>`;
     }).join("");
 
     /* fade-up 発火 */
